@@ -1,15 +1,6 @@
 import {
-    log,
-    isDebug
+    printErrorLog
 } from '@zcl/utils';
 
-function printErrorLog(e, type) {
-    if (isDebug()) {
-        log.error(type, e)
-    } else {
-        log.error(type, e.message)
-    }
-}
-
-process.on('uncaughtException', (e) => printErrorLog(e, 'error'))
-process.on('unhandledRejection', (e) => printErrorLog(e, 'promise'))
+process.on('uncaughtException', (e) => printErrorLog(e, 'error')); // 捕获错误信息
+process.on('unhandledRejection', (e) => printErrorLog(e, 'promise')); // 捕获Promise.reject时的信息

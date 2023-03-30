@@ -10,10 +10,9 @@ if (isDebug()) {
 log.heading = '@zcl-cli';
 
 log.addLevel('success', 2000, {
-    fg: 'g',
+    fg: 'green',
     bold: true
 })
-
 
 
 export default log

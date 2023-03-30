@@ -20,7 +20,11 @@
         "test": "node ./__tests__/utils.test.js"
     },
     "dependencies": {
-        "npmlog": "^7.0.1"
+        "axios": "^1.3.4",
+        "inquirer": "^9.1.5",
+        "npmlog": "^7.0.1",
+        "ora": "^6.3.0",
+        "url-join": "^5.0.0"
     },
     "type": "module"
 }
