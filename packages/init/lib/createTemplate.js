@@ -43,7 +43,13 @@ function getAddType() {
 function getAddName() {
   return makeInput({
     message: '请输入项目名称',
-    defaultValue: ''
+    defaultValue: '',
+    validate(name) { // 验证流程，不通过则会一直在当前流程
+      if (name.length > 0) {
+        return true;
+      }
+      return '项目名称必须输入'
+    }
   })
 }
 // 获取创建的模版
