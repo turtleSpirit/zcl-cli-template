@@ -18,7 +18,7 @@ function getCacheDir(targetPath) {
 }
 // 创建缓存目录
 function makeCacheDir(targetPath) {
-  const cacheDir = getCacheDir(targetPath);
+  const cacheDir = getCacheDir(targetPath); // /Users/zhuchunlai/.cli-zcl/addTemplate/node_modules
   if (!pathExistsSync(cacheDir)) {
     fse.mkdirpSync(cacheDir); // 如果这个路径下任何一个目录不存在就创建一个目录
   }

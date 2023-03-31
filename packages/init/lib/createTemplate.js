@@ -66,14 +66,40 @@ function makeTargetPath() {
 }
 
 export default async function createTemplate(name, opts) {
-  const addType = await getAddType();
+  //#region 直接输入相应类型 模版创建；便于支持test
+  const {
+    type = null, template = null
+  } = opts;
+  let addType;
+  let addName;
+  let selectedTemplate;
+  //#endregion
+
+  //类型是否存在
+  if (type) {
+    addType = type;
+  } else {
+    addType = await getAddType();
+  };
+
   log.verbose('addType', addType)
   if (addType === ADD_TYPE_PROJECT) {
-    const addName = await getAddName();
-    log.verbose('addName', addName)
-    const addTemplate = await getAddTemplate();
-    log.verbose('addTemplate', addTemplate);
-    const selectedTemplate = ADD_TEMPLATE.find(item => item.value === addTemplate);
+    if (name) {
+      addName = name;
+    } else {
+      addName = await getAddName();
+    }
+    log.verbose('addName', addName);
+
+    if (template) {
+      selectedTemplate = ADD_TEMPLATE.find(item => item.value === template);
+    } else {
+      const addTemplate = await getAddTemplate();
+      selectedTemplate = ADD_TEMPLATE.find(item => item.value === addTemplate);
+    }
+    if (!selectedTemplate) {
+      throw new Error(`项目模版${template}不存在`);
+    }
     log.verbose('selectedTemplate', selectedTemplate);
     // 获取最新版本
     const latestVersion = await getLatestVersion(selectedTemplate.npmName);
@@ -89,5 +115,7 @@ export default async function createTemplate(name, opts) {
       template: selectedTemplate,
       targetPath
     }
+  } else {
+    throw new Error(`类型${addType}不支持`);
   }
 }

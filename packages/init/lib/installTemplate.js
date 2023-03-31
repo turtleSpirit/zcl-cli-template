@@ -1,11 +1,29 @@
 import path from 'node:path';
 import fse from 'fs-extra';
+import ora from 'ora';
 import {
   pathExistsSync
 } from 'path-exists';
 import {
   log
 } from '@zcl/utils';
+
+// 获取下载文件的路径
+function getCacheFilePath(targetPath, template) {
+  return path.resolve(targetPath, 'node_modules', template.npmName, 'template');
+}
+//从缓存目录中拷贝文件
+function copyFile(targetPath, template, installDir) {
+  const originFile = getCacheFilePath(targetPath, template);
+  const fileList = fse.readdirSync(originFile); // 读取这个路径下的文件
+  const spinner = ora('正在安装模版...').start();
+  // copy文件
+  fileList.map(file => {
+    fse.copySync(`${originFile}/${file}`, `${installDir}/${file}`); // copy文件需要跟上file
+  })
+  spinner.stop();
+  log.success('安装成功');
+}
 
 export default function installTemplate(selectedTemplate, opts) {
   const {
@@ -31,4 +49,5 @@ export default function installTemplate(selectedTemplate, opts) {
   } else {
     fse.ensureDirSync(installDir);
   }
+  copyFile(targetPath, template, installDir);
 }

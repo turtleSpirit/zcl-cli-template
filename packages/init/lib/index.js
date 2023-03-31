@@ -6,7 +6,13 @@ import {
 import Command from "@zcl/command";
 import createTemplate from './createTemplate.js';
 import downloadTemplate from './downloadTemplate.js';
+import installTemplate from './installTemplate.js';
 
+/**
+ * examples: cli-zcl-test init
+ * cli-zcl-test init aaa -t project -tp template-vue3
+ * 
+ */
 class InitCommand extends Command {
     get command() {
         return 'init [name]'
@@ -18,7 +24,9 @@ class InitCommand extends Command {
 
     get options() {
         return [
-            ['-f --force', '是否强制更新', false]
+            ['-f --force', '是否强制更新', false],
+            ['-t,--type <type>', '项目类型(值：project/page)'], // type的string值，需要<type>
+            ['-tp,--template <template>', '模版名称']
         ]
     }
 
