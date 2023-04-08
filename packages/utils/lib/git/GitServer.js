@@ -8,9 +8,16 @@ import {
 } from 'path-exists'
 import fse from 'fs-extra';
 import {
+    execa
+} from 'execa';
+import {
     makePassword
 } from '../inquirer.js';
 import log from '../log.js';
+import {
+    getGitProjectPath,
+    makeCacheDir
+} from '../file.js';
 
 const TEMP_HOME = '.cli-zcl'; //缓存目录主页
 const TEMP_TOKEN = '.token';
@@ -60,10 +67,29 @@ class GitServer {
         });
     }
 
+    removeToken() {
+        const tokenPath = createTokenPath();
+        // 如果token文件不存在，就存入token
+        if (pathExistsSync(tokenPath)) {
+            fse.removeSync(tokenPath);
+        }
+    }
+
     savePlatform(platform) {
         fs.writeFileSync(createPlatformPath(), platform);
     }
+
+    cloneRepo(fullName, tag) {
+        const targetPath = getGitProjectPath();
+        makeCacheDir(targetPath);
+        if (tag) {
+            return execa('git', ['-C', targetPath, 'clone', this.getRepoUrl(fullName), '-b', tag]);
+        } else {
+            return execa('git', ['-C', targetPath, 'clone', this.getRepoUrl(fullName)]);
+        }
+    }
 }
+
 export {
     getGitPlatform,
     createTokenPath,

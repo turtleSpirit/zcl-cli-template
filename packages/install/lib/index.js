@@ -2,6 +2,8 @@
 
 import Command from "@zcl/command";
 import {
+    ora,
+    makeInput,
     makeList,
     GitHub,
     Gitee,
@@ -10,7 +12,8 @@ import {
     removeFile,
     pathExists,
     createTokenPath,
-    createPlatformPath
+    createPlatformPath,
+    printErrorLog
 } from "@zcl/utils";
 
 class InstallCommand extends Command {
@@ -36,6 +39,12 @@ class InstallCommand extends Command {
      * install action中参数第一个为options
      */
     async action([opts]) {
+        await this.generateGitAPI(opts);
+        // await this.searchGitAPI();
+        this.downloadRepo();
+    }
+
+    async generateGitAPI(opts) {
         log.verbose('install opts:', opts);
         const tokenPath = createTokenPath();
         const platformPath = createPlatformPath();
@@ -54,11 +63,12 @@ class InstallCommand extends Command {
                 removeFile(platformPath);
             }
         }
-        if (!reset && resetToken && pathExists(resetToken)) {
+        // 
+        if (!reset && resetToken && pathExists(tokenPath)) {
             removeFile(tokenPath);
         }
-        if (!reset && resetPlatform) {
-            removeFile(tokenPath);
+        if (!reset && resetPlatform && pathExists(platformPath)) {
+            removeFile(platformPath);
         }
 
         let platform = getGitPlatform();
@@ -83,8 +93,41 @@ class InstallCommand extends Command {
         } else {
             gitAPI = new Gitee();
         }
+        this.gitAPI = gitAPI;
         gitAPI.savePlatform(platform);
         await gitAPI.init();
+
+
+    }
+
+    async searchGitAPI() {
+        const query = await makeInput({
+            message: "请输入搜索关键词",
+            validate(value) {
+                if (value.length > 0) {
+                    return true;
+                }
+                return "请输入搜索关键词";
+            }
+        })
+        const res = await this.gitAPI.searchRepositories({
+            q: query,
+            per_page: 10
+        });
+    }
+
+    async downloadRepo() {
+        const fullName = 'panjiachen/vue-element-admin';
+        const spinner = ora(`正在下载${fullName}仓库...`).start();
+
+        try {
+            await this.gitAPI.cloneRepo(fullName);
+            spinner.stop();
+            log.success('下载成功');
+        } catch (error) {
+            spinner.stop();
+            printErrorLog(error);
+        }
     }
 }
 

@@ -1,4 +1,9 @@
 'use strict';
+import {
+    execa
+} from 'execa';
+import ora from 'ora';
+import fse from 'fs-extra';
 import log from './log.js';
 import isDebug from './isDebug.js';
 import {
@@ -17,7 +22,9 @@ import {
 } from './git/GitServer.js';
 import {
     removeFile,
-    pathExists
+    pathExists,
+    getGitProjectPath,
+    makeTargetPath
 } from './file.js';
 
 export function printErrorLog(e, type) {
@@ -29,6 +36,9 @@ export function printErrorLog(e, type) {
 }
 
 export {
+    execa,
+    ora,
+    fse,
     log,
     isDebug,
     makeList,
@@ -37,8 +47,11 @@ export {
     GitHub,
     Gitee,
     getGitPlatform,
+    // 文件及路径处理相关
     removeFile,
     pathExists,
     createTokenPath,
-    createPlatformPath
+    createPlatformPath,
+    getGitProjectPath,
+    makeTargetPath
 };
