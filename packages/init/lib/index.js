@@ -32,8 +32,8 @@ class InitCommand extends Command {
 
     async action([name, opts]) {
         log.verbose('init', name, opts)
-        // 1.选择项目模版，生成项目信息
-        // 需求增加，获取name为文件名称
+            // 1.选择项目模版，生成项目信息
+            // 需求增加，获取name为文件名称
         const selectedTemplate = await createTemplate(name, opts);
         log.verbose('selectedTemplate', selectedTemplate);
         // 2.下载项目模版只缓存目录

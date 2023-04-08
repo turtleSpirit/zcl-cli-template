@@ -8,6 +8,17 @@ import {
 import {
     getLatestVersion
 } from './npm.js';
+import GitHub from './git/Github.js';
+import Gitee from './git/Gitee.js';
+import {
+    getGitPlatform,
+    createTokenPath,
+    createPlatformPath
+} from './git/GitServer.js';
+import {
+    removeFile,
+    pathExists
+} from './file.js';
 
 export function printErrorLog(e, type) {
     if (isDebug()) {
@@ -22,5 +33,12 @@ export {
     isDebug,
     makeList,
     makeInput,
-    getLatestVersion
+    getLatestVersion,
+    GitHub,
+    Gitee,
+    getGitPlatform,
+    removeFile,
+    pathExists,
+    createTokenPath,
+    createPlatformPath
 };
