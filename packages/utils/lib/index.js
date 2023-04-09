@@ -4,6 +4,8 @@ import {
 } from 'execa';
 import ora from 'ora';
 import fse from 'fs-extra';
+import ejs from 'ejs'; // 动态模版渲染
+import glob from 'glob'; // 获取文件夹下排除之外的文件
 import log from './log.js';
 import isDebug from './isDebug.js';
 import {
@@ -15,7 +17,7 @@ import {
 } from './npm.js';
 import GitHub from './git/Github.js';
 import Gitee from './git/Gitee.js';
-import {
+import GitServer, {
     getGitPlatform,
     createTokenPath,
     createPlatformPath
@@ -24,7 +26,8 @@ import {
     removeFile,
     pathExists,
     getGitProjectPath,
-    makeTargetPath
+    makeTargetPath,
+    makeCacheDir
 } from './file.js';
 
 export function printErrorLog(e, type) {
@@ -39,11 +42,14 @@ export {
     execa,
     ora,
     fse,
+    ejs,
+    glob,
     log,
     isDebug,
     makeList,
     makeInput,
     getLatestVersion,
+    GitServer,
     GitHub,
     Gitee,
     getGitPlatform,
@@ -53,5 +59,6 @@ export {
     createTokenPath,
     createPlatformPath,
     getGitProjectPath,
-    makeTargetPath
+    makeTargetPath,
+    makeCacheDir
 };

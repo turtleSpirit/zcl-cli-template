@@ -24,6 +24,7 @@ function copyFile(targetPath, template, installDir) {
         fse.copySync(`${originFile}/${file}`, `${installDir}/${file}`); // copy文件需要跟上file
     })
     spinner.stop();
+    fse.removeSync(targetPath); //删除缓存目录
     log.success('安装成功');
 }
 
