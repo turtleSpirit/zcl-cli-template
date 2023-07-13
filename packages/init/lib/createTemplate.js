@@ -9,6 +9,11 @@ import {
 const ADD_TYPE_PROJECT = 'project';
 const ADD_TYPE_PAGE = 'page';
 const ADD_TEMPLATE = [{
+    name: 'vite vue3项目模版',
+    value: 'template-test',
+    npmName: '@ordinaryspirit/template-test',
+    version: '1.0.1'
+}, {
     name: 'vue3项目模版',
     value: 'template-vue3',
     npmName: '@imooc.com/template-vue3',
